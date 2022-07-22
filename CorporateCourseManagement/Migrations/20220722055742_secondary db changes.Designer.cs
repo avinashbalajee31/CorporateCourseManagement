@@ -2,6 +2,7 @@
 using CorporateCourseManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CorporateCourseManagement.Migrations
 {
     [DbContext(typeof(CorporateCourseManagementDbContext))]
-    partial class CorporateCourseManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220722055742_secondary db changes")]
+    partial class secondarydbchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

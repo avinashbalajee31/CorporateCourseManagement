@@ -47,7 +47,7 @@ namespace CorporateCourseManagement.Models
 
                 entity.Property(e => e.Role)
                     .HasColumnName("role")
-                    .HasDefaultValueSql("'0'");
+                    .HasDefaultValueSql("user");
             });
 
             OnModelCreatingPartial(modelBuilder);

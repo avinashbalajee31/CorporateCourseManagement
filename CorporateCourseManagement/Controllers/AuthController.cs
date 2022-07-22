@@ -22,9 +22,24 @@ namespace CorporateCourseManagement.Controllers
         [Route("register")]
         public async Task<ActionResult<User>> Register([FromBody] User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return Ok("User Created Successfully");
+            var CheckUser = await _context.Users.FirstOrDefaultAsync(e => e.EmailId == user.EmailId);
+
+            if (CheckUser == null) {
+                if (user != null && user.Password.Length > 8 && user.EmailId.Contains("@gmail.com"))
+                {
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+                    return Ok("User Created Successfully");
+                }
+                else
+                {
+                    return BadRequest("Incorrect input");
+                }
+            }
+            else
+            {
+                return BadRequest("User already exist");
+            }
         }
 
         [HttpPost]

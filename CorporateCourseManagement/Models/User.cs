@@ -11,6 +11,6 @@ namespace CorporateCourseManagement.Models
         public string EmailId { get; set; } = null!;
         public string Password { get; set; } = null!;
 
-        public sbyte? Role { get; set; }
+        public string? Role { get; set; }
     }
 }
