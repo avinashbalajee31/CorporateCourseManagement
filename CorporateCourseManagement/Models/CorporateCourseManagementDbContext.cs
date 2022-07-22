@@ -42,12 +42,17 @@ namespace CorporateCourseManagement.Models
                     .HasColumnName("name");
 
                 entity.Property(e => e.Password)
-                    .HasMaxLength(45)
+                    .HasMaxLength(255)
                     .HasColumnName("password");
 
+                //entity.Property(e => e.Role)
+                //    .HasColumnName("role")
+                //    .HasDefaultValueSql("1");
                 entity.Property(e => e.Role)
+                    .HasMaxLength(20)
                     .HasColumnName("role")
-                    .HasDefaultValueSql("user");
+                    .HasDefaultValueSql("'Trainee'");
+
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -2,6 +2,7 @@
 using CorporateCourseManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CorporateCourseManagement.Migrations
 {
     [DbContext(typeof(CorporateCourseManagementDbContext))]
-    partial class CorporateCourseManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220722064203_3rd db change")]
+    partial class _3rddbchange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,16 +44,16 @@ namespace CorporateCourseManagement.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)")
                         .HasColumnName("password");
 
                     b.Property<string>("Role")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
+                        .HasColumnType("longtext")
                         .HasColumnName("role")
-                        .HasDefaultValueSql("'Trainee'");
+                        .HasDefaultValueSql("user");
 
                     b.HasKey("Id");
 

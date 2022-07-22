@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using bcrypt = BCrypt.Net.BCrypt;
 
 namespace CorporateCourseManagement.Controllers
 {
@@ -27,9 +28,14 @@ namespace CorporateCourseManagement.Controllers
             if (CheckUser == null) {
                 if (user != null && user.Password.Length > 8 && user.EmailId.Contains("@gmail.com"))
                 {
+                    //_context.Users.Add(user);
+                    //await _context.SaveChangesAsync();
+                    //return Ok("User Created Successfully");
+                    user.Password = bcrypt.HashPassword(user.Password, 12);
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
                     return Ok("User Created Successfully");
+
                 }
                 else
                 {
@@ -46,21 +52,28 @@ namespace CorporateCourseManagement.Controllers
         [Route("login")]
         public async Task<ActionResult<User>> Login([FromBody] Login user)
         {
-            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.EmailId == user.EmailId && x.Password == user.Password);
+            var dbUser = await _context.Users.FirstOrDefaultAsync(x => x.EmailId == user.EmailId );
             if (dbUser == null)
             {
                 return BadRequest("User Not Found");
             }
-            string token = CreateToken(user);
+            else if (!(bcrypt.Verify(user.Password, dbUser.Password)))
+            {
+                return BadRequest("Invalid Password.");
+            }
+            var name = dbUser.Name;
+            var  role = dbUser.Role;
+            string token = CreateToken(user,role,name);
             return Ok(token);
         }
 
-        private string CreateToken(Login user)
+        private string CreateToken(Login user,string role,string name)
         {
             List<Claim> claims = new List<Claim>
             {
+                new Claim(ClaimTypes.Name,name),    
                 new Claim(ClaimTypes.Email, user.EmailId),
-                new Claim(ClaimTypes.Role,"1")
+                new Claim(ClaimTypes.Role,role)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(

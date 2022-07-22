@@ -11,6 +11,9 @@ namespace CorporateCourseManagement.Models
         public string EmailId { get; set; } = null!;
         public string Password { get; set; } = null!;
 
-        public string? Role { get; set; }
+        //[SqlDefaultValue(DefaultValue = "getutcdate()")]
+        //public string? Role { get; set; } 
+        //public sbyte? Role { get; set; }
+        public string? Role { get; set; } = "Trainee";
     }
 }
