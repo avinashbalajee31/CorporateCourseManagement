@@ -9,6 +9,7 @@ namespace CorporateCourseManagement.Models
 
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
