@@ -118,6 +118,35 @@ namespace CorporateCourseManagement.Controllers
         }
 
 
+        [HttpGet]
+        [Route("getFeedback"), Authorize(Roles = "Admin")]
+        public IEnumerable<Feedback> GetFeedback()
+        {
+            var Feedback = _context.Feedbacks;
+
+            return (Feedback);
+        }
+
+
+        [HttpDelete]
+        [Route("deleteFeedback/{id}"), Authorize(Roles = "Admin")]
+        public string DeleteFeedback(int? id)
+        {
+            try
+            {
+                var feedback = _context.Feedbacks.Where(e => e.Id == id).SingleOrDefault();
+                _context.Feedbacks.Remove(feedback);
+                _context.SaveChanges();
+
+                return "Feedback with Id=" + id + " is deleted successfully";
+            }
+            catch (Exception ex)
+            {
+                return "Exception occurred: " + ex;
+            }
+        }
+
+
 
 
     }
