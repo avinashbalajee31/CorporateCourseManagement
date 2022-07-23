@@ -19,12 +19,41 @@ namespace CorporateCourseManagement.Controllers
 
         [HttpGet]
         [Route("getUsers"), Authorize(Roles = "Admin")]
-        public IEnumerable<User> GetUsers()
+        public ActionResult GetUsers()
         {
             var staffs = _context.Users;
+            if(staffs != null)
+            {
+                var users =staffs.Select(x => new
+                {
+                    Id=x.Id,
+                    Name=x.Name,
+                    EmailID=x.EmailId,
+                    Role=x.Role,    
+                });
+                return Ok(users);
+            }
 
-            return (staffs);
+            return BadRequest("no users available");
         }
+
+        //public ActionResult GetUsers()
+        //{
+        //    var staffs = _context.StaffData.Where(x => x.Role == "User");
+        //    if (staffs != null)
+        //    {
+        //        var users = staffs.Select(u => new
+        //        {
+        //            Id = u.Id,
+        //            UserName = u.Username,
+        //            Email = u.Email,
+        //            Designation = u.Designation
+        //        });
+        //        return Ok(users);
+        //    }
+        //    return BadRequest("Failed");
+        //}
+
 
         [HttpGet]
         [Route("getTrainers"), Authorize(Roles = "Admin")]

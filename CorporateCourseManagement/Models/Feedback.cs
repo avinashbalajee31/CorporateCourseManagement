@@ -8,6 +8,8 @@ namespace CorporateCourseManagement.Models
         public int Id { get; set; } 
         public string Name { get; set; } = null!;
         public string EmailId { get; set; } = null!;
+
+        public string Role { get; set; } = null!;
         public string AboutWhom { get; set; } = null!;
         public string FeedbackInWords { get; set; } = null!;
         [Required]  

@@ -12,5 +12,6 @@ namespace CorporateCourseManagement.Models
         public int CourseDurationInWeeks { get; set; } 
         public string CourseTrainer { get; set; } = null!;
 
+        public int NoOfStudentsEnrolled { get; set; } 
     }
 }
