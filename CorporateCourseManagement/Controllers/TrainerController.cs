@@ -38,7 +38,7 @@ namespace CorporateCourseManagement.Controllers
 
         [HttpPost]
         [Route("feedbackByTrainer"), Authorize(Roles = "Trainer")]
-        public async Task<ActionResult<Feedback>> feedbackByTrainer([FromBody] Feedback feedback)
+        public async Task<ActionResult<Feedback>> FeedbackByTrainer([FromBody] Feedback feedback)
         {
 
             var TokenVariables = HttpContext.User;
