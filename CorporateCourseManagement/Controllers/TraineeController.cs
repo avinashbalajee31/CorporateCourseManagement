@@ -95,6 +95,65 @@ namespace CorporateCourseManagement.Controllers
 
 
 
+        [HttpDelete]
+        [Route("withdrawCourse/{id}"), Authorize(Roles = "Trainee")]
+        public string withdrawCourse( int? id)
+        {
+            try
+            {
+                var TokenVariables = HttpContext.User;
+                var count = 0;
+                var name = "";
+                if (TokenVariables?.Claims != null)
+                {
+                    foreach (var claim in TokenVariables.Claims)
+                    {
+                        name = claim.Value;
+                        break;
+                    }
+                }
+
+                var newChanges = _context.Courses.Where(e => e.Id ==id).SingleOrDefault();
+
+                string[] list = newChanges.NameOfTheStudentsEnrolled.Split(',');
+                foreach (var w in list)
+                {
+                    if (name.Equals(w))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        count += 1;
+                    }
+                }
+                var newString = "";
+                foreach (var w in list)
+                {
+                    if (w == list[count])
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        newString += w + ",";
+                    }
+                }
+                newChanges.NoOfStudentsEnrolled = newChanges.NoOfStudentsEnrolled - 1;
+                newChanges.NameOfTheStudentsEnrolled = "";
+                newChanges.NameOfTheStudentsEnrolled = newString;
+                _context.SaveChanges();
+                return "withdrawn from the course";
+            }
+            catch (Exception ex)
+            {
+                return "Exception occurred: " + ex;
+            }
+        }
+
+
+
+
 
 
 
