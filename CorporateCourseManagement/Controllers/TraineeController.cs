@@ -70,14 +70,20 @@ namespace CorporateCourseManagement.Controllers
                         newChanges.NameOfTheStudentsEnrolled = Name + ",";
                     }
                     _context.SaveChanges();
+                    Send.Producer(Name + " you have successfully registered for " + newChanges.CourseName + " course") ;
+
                     return Ok(Name + " you have successfully registered for " + newChanges.CourseName + " course");
                 }
                 else if (flag == 1)
                 {
+                    Send.Producer("You have already registered in the course, please select a different course to enroll");
+
                     return BadRequest("You have already registered in the course, please select a different course to enroll");
                 }
                 else
                 {
+                    Send.Producer("You couldn't register");
+
                     return BadRequest("You couldn't register");
                 }
             }
@@ -124,6 +130,8 @@ namespace CorporateCourseManagement.Controllers
 
                 _context.Feedbacks.Add(insert);
                 await _context.SaveChangesAsync();
+                Send.Producer("Your Feedback about Trainer is Saved");
+
                 return Ok("Your Feedback about Trainer is Saved");
             }
 

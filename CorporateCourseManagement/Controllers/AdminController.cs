@@ -37,45 +37,51 @@ namespace CorporateCourseManagement.Controllers
             return BadRequest("no users available");
         }
 
-        //public ActionResult GetUsers()
-        //{
-        //    var staffs = _context.StaffData.Where(x => x.Role == "User");
-        //    if (staffs != null)
-        //    {
-        //        var users = staffs.Select(u => new
-        //        {
-        //            Id = u.Id,
-        //            UserName = u.Username,
-        //            Email = u.Email,
-        //            Designation = u.Designation
-        //        });
-        //        return Ok(users);
-        //    }
-        //    return BadRequest("Failed");
-        //}
 
 
         [HttpGet]
         [Route("getTrainers"), Authorize(Roles = "Admin")]
-        public IEnumerable<User> GetTrainer()
+        public ActionResult GetTrainer()
         {
             
 
             var staffs =  _context.Users.Where(x => x.Role == "Trainer");
+            if (staffs != null)
+            {
+                var users = staffs.Select(x => new
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    EmailID = x.EmailId,
+                    Role = x.Role,
+                });
+                return Ok(users);
+            }
 
-            return (staffs);
+            return BadRequest(staffs);
         }
 
 
         [HttpGet]
         [Route("getTrainees"), Authorize(Roles = "Admin")]
-        public IEnumerable<User> GetTrainee()
+        public ActionResult GetTrainee()
         {
 
 
-            var staffs = _context.Users.Where(x => x.Role == "Trainee");
+            var staffs = _context.Users.Where(x => x.Role == "Trainee"); 
+            if (staffs != null)
+            {
+                var users = staffs.Select(x => new
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    EmailID = x.EmailId,
+                    Role = x.Role,
+                });
+                return Ok(users);
+            }
 
-            return (staffs);
+            return BadRequest(staffs);
         }
 
 

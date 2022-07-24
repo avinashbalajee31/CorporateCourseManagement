@@ -75,6 +75,8 @@ namespace CorporateCourseManagement.Controllers
 
                 _context.Feedbacks.Add(insert);
                 await _context.SaveChangesAsync();
+                Send.Producer("Your Feedback is Saved");
+
                 return Ok("Your Feedback is Saved");
             }
             else
