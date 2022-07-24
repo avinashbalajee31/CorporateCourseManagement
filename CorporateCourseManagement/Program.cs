@@ -15,6 +15,8 @@ var serverVersion = new MySqlServerVersion(new Version(8, 0, 28));
 
 // Add services to the container.
 
+
+
 builder.Services.AddDbContext<CorporateCourseManagementDbContext>(options =>
 {
     // options. (builder.Configuration.GetConnectionString("Mysql"));

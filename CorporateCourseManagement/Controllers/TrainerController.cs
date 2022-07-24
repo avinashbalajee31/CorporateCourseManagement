@@ -21,17 +21,25 @@ namespace CorporateCourseManagement.Controllers
         [Route("updateCourseDuration"), Authorize(Roles = "Trainer")]
         public string UpdateCourseDuration([FromBody] Course course)
         {
+
             try
             {
+                //var newChanges = _context.Courses.Where(e => e.Id == course.Id).SingleOrDefault();
+                //newChanges.CourseDurationInWeeks = course.CourseDurationInWeeks;
+                //_context.SaveChanges();
+                //return "course " + newChanges.CourseName+ " is being Updated";
                 var newChanges = _context.Courses.Where(e => e.Id == course.Id).SingleOrDefault();
                 newChanges.CourseDurationInWeeks = course.CourseDurationInWeeks;
                 _context.SaveChanges();
-                return "course " + newChanges.CourseName+ " is being Updated";
+                return "course"+newChanges.CourseName+" is being Updated";
+
+
             }
             catch (Exception ex)
             {
                 return "Error Occured " + ex;
             }
+
 
         }
 
@@ -66,7 +74,6 @@ namespace CorporateCourseManagement.Controllers
                     FeedbackInWords = feedback.FeedbackInWords,
                     Rating = feedback.Rating
                 };
-
 
                 _context.Feedbacks.Add(insert);
                 await _context.SaveChangesAsync();
