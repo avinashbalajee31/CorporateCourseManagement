@@ -13,5 +13,7 @@ namespace CorporateCourseManagement.Models
         public string CourseTrainer { get; set; } = null!;
 
         public int NoOfStudentsEnrolled { get; set; } 
+
+        public string NameOfTheStudentsEnrolled { get; set; } 
     }
 }

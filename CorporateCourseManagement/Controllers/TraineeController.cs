@@ -22,6 +22,7 @@ namespace CorporateCourseManagement.Controllers
         [Route("enrollInCourse"), Authorize(Roles = "Trainee")]
         public async Task<ActionResult<Course>> EnrollInCourse([FromBody] Course courseId)
         {
+            var flag = 0;
             var TokenVariables = HttpContext.User;
             var Name = "";
             if (TokenVariables?.Claims != null)
@@ -33,13 +34,52 @@ namespace CorporateCourseManagement.Controllers
                 }
             }
 
+
+
             try
             {
                 var newChanges = _context.Courses.Where(e => e.Id == courseId.Id).SingleOrDefault();
-                var NoOfStudentsEnrolled = newChanges.NoOfStudentsEnrolled;
-                newChanges.NoOfStudentsEnrolled=NoOfStudentsEnrolled+1;
-                _context.SaveChanges();
-                return Ok(Name+" you have successfully registered for "+newChanges.CourseName+" course");
+
+                var enrolledNames = newChanges.NameOfTheStudentsEnrolled;
+                if(enrolledNames != null)
+                {
+                    char separator = ',' ;
+                    string[] namesAlreadyEnrolled = newChanges.NameOfTheStudentsEnrolled.Split(separator);
+                    //new string[] { newChanges.NameOfTheStudentsEnrolled.Split(",") };
+                    foreach (String NamesInArray in namesAlreadyEnrolled)
+                    {
+                        if (NamesInArray.Equals(Name))
+                        {
+                            flag = 1;
+                        }
+                    }
+                }
+
+                
+
+                if (newChanges != null && flag==0)
+                {
+                    var NoOfStudentsEnrolled = newChanges.NoOfStudentsEnrolled;
+                    newChanges.NoOfStudentsEnrolled = NoOfStudentsEnrolled + 1;
+                    if (enrolledNames != null)
+                    {
+                        newChanges.NameOfTheStudentsEnrolled = enrolledNames  + Name + ",";
+                    }
+                    else
+                    {
+                        newChanges.NameOfTheStudentsEnrolled = Name + ",";
+                    }
+                    _context.SaveChanges();
+                    return Ok(Name + " you have successfully registered for " + newChanges.CourseName + " course");
+                }
+                else if (flag == 1)
+                {
+                    return BadRequest("You have already registered in the course, please select a different course to enroll");
+                }
+                else
+                {
+                    return BadRequest("You couldn't register");
+                }
             }
             catch (Exception ex)
             {
