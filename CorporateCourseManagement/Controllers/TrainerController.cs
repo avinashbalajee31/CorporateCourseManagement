@@ -24,14 +24,12 @@ namespace CorporateCourseManagement.Controllers
 
             try
             {
-                //var newChanges = _context.Courses.Where(e => e.Id == course.Id).SingleOrDefault();
-                //newChanges.CourseDurationInWeeks = course.CourseDurationInWeeks;
-                //_context.SaveChanges();
-                //return "course " + newChanges.CourseName+ " is being Updated";
+                
                 var newChanges = _context.Courses.Where(e => e.Id == course.Id).SingleOrDefault();
                 newChanges.CourseDurationInWeeks = course.CourseDurationInWeeks;
+                Send.Producer("Course Duration is being Updated to "+newChanges.CourseDurationInWeeks+" weeks");
                 _context.SaveChanges();
-                return "course"+newChanges.CourseName+" is being Updated";
+                return "course "+newChanges.CourseName+"'s Duration is being Updated";
 
 
             }
