@@ -58,31 +58,40 @@ namespace CorporateCourseManagement.Controllers
         public async Task<ActionResult<Feedback>> FeedbackByTrainee([FromBody] Feedback feedback)
         {
 
-            var TokenVariables = HttpContext.User;
-            var Name = "";
-            if (TokenVariables?.Claims != null)
-            {
-                foreach (var claim in TokenVariables.Claims)
+            var checkUserRole = _context.Users.Where(x=> x.Name==feedback.AboutWhom).SingleOrDefault();  
+            if (checkUserRole.Role != "Trainee") { 
+                var TokenVariables = HttpContext.User;
+                var Name = "";
+                if (TokenVariables?.Claims != null)
                 {
-                    Name = claim.Value;
-                    break;
+                    foreach (var claim in TokenVariables.Claims)
+                    {
+                        Name = claim.Value;
+                        break;
+                    }
                 }
+                var userDetails = _context.Users.Where(x => x.Name == Name).SingleOrDefault();
+                var insert = new Feedback
+                {
+                    Name = userDetails.Name,
+                    EmailId = userDetails.EmailId,
+                    Role = userDetails.Role,
+                    AboutWhom = feedback.AboutWhom,
+                    FeedbackInWords = feedback.FeedbackInWords,
+                    Rating = feedback.Rating
+                };
+
+
+                _context.Feedbacks.Add(insert);
+                await _context.SaveChangesAsync();
+                return Ok("Your Feedback about Trainer is Saved");
             }
-            var userDetails = _context.Users.Where(x => x.Name == Name).SingleOrDefault();
-            var insert = new Feedback
+
+            else
             {
-                Name = userDetails.Name,
-                EmailId = userDetails.EmailId,
-                Role = userDetails.Role,
-                AboutWhom = feedback.AboutWhom,
-                FeedbackInWords = feedback.FeedbackInWords,
-                Rating = feedback.Rating
-            };
+                return BadRequest("You cannot give feedback about another trainee");
+            }
 
-
-            _context.Feedbacks.Add(insert);
-            await _context.SaveChangesAsync();
-            return Ok("Your Feedback about Trainer is Saved");
         }
     }
 }
