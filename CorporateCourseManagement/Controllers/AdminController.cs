@@ -136,7 +136,7 @@ namespace CorporateCourseManagement.Controllers
 
         [HttpDelete]
         [Route("deleteCourse/{id}"), Authorize(Roles = "Admin")]
-        public string DeleteEmployee(int? id)
+        public string DeleteCourse(int? id)
         {
             try
             {               
